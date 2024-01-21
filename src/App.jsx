@@ -43,52 +43,55 @@ const companies = [
   },
   {
     id: 5,
-      codes: [88, 97],
-      icon: "https://mobi.uz/images/favicon.ico",
-    },
-    
+    codes: [88, 97],
+    icon: "https://mobi.uz/images/favicon.ico",
+  },
 ];
 
 const App = () => {
   const [displayText, setDisplayText] = useState(""); // State to manage the displayed text
-
- 
+  const [img, setIMg] = useState(null)
   const handleButtonClick = (text) => {
     if (text === "delete") {
-      // Handle delete button
       setDisplayText((prevText) => prevText.slice(0, -1));
     } else if (displayText.length < 12) {
-      // Check if the entered text is a valid phone number (assuming 11 digits for simplicity)
-      const formattedText = displayText.replace(/\s|-/g, ''); // Remove existing spaces and hyphens
-      const formattedWithSpaces = formattedText.replace(/(\d{2})(\d{3})(\d{2})/, '$1 $2-$3-');
+      const formattedText = displayText.replace(/\s|-/g, "");
+      const formattedWithSpaces = formattedText.replace(
+        /(\d{2})(\d{3})(\d{2})/,
+        "$1 $2-$3-"
+      );
 
       if (formattedText.length === 12) {
-        // If 12 characters have been entered, check if the color is red (assuming you have a class named 'red' for that)
-        const contentElement = document.querySelector('.content');
-        if (contentElement && contentElement.style.color === 'red') {
-          // Stop further entry if the color is red
+        const contentElement = document.querySelector(".content");
+        if (contentElement && contentElement.style.color === "red") {
           return;
         }
       }
 
-      // Continue with updating the displayed text
       setDisplayText((prevText) => formattedWithSpaces + text);
     }
   };
   const getIconForCode = (code) => {
-    const matchingCompany = companies.find(company => company.codes.includes(code));
+    const matchingCompany = companies.find((company) =>
+      company.codes.includes(code)
+    );
     return matchingCompany ? matchingCompany.icon : null;
   };
   return (
     <div>
       <div className="container">
         <Content>
-        <img className="img" src={getIconForCode(parseInt(displayText, 10))} alt="" />
+  
+          <img
+            className="img"
+            src={getIconForCode(parseInt(displayText, 10))}
+            alt=""
+          />
           <h2>{displayText}</h2>
         </Content>
         <Numbers>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, "+", 0].map((number) => (
-             <button key={number} onClick={() => handleButtonClick(number)}>
+            <button key={number} onClick={() => handleButtonClick(number)}>
               {number}
             </button>
           ))}
